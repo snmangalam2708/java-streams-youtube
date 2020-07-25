@@ -12,11 +12,8 @@ public class Main {
 
     // Imperative approach ❌
 
-    /*
-
-    List<Person> females = new ArrayList<>();
-
-    for (Person person : people) {
+   List<Person> females = new ArrayList<>();
+    for(Person person: people){
 
       if (person.getGender().equals(Gender.FEMALE)) {
         females.add(person);
@@ -24,68 +21,94 @@ public class Main {
     }
 
     females.forEach(System.out::println);
+    System.out.println("\n");
 
-    */
+
+
 
     // Declarative approach ✅
 
     // Filter
-    List<Person> females = people.stream()
-        .filter(person -> person.getGender().equals(Gender.FEMALE))
-        .collect(Collectors.toList());
+    List<Person> females_filter = people.stream()
+            .filter(person -> person.getGender().equals(Gender.FEMALE))
+            .collect(Collectors.toList());
 
-//    females.forEach(System.out::println);
+    females_filter.forEach(System.out::println);
+    System.out.println("\n");
 
     // Sort
-    List<Person> sorted = people.stream()
-        .sorted(Comparator.comparing(Person::getAge).thenComparing(Person::getGender).reversed())
-        .collect(Collectors.toList());
 
-//    sorted.forEach(System.out::println);
+    List<Person> females_sort = people.stream()
+            .sorted(Comparator.comparing(Person::getAge).reversed())
+            .collect(Collectors.toList());
+
+    females_sort.forEach(System.out::println);
+    System.out.println("\n");
+
 
     // All match
-    boolean allMatch = people.stream()
-        .allMatch(person -> person.getAge() > 8);
 
-//    System.out.println(allMatch);
+    boolean age_greater_5 = people.stream()
+            .allMatch(person -> person.getAge()>5);
+
+    System.out.println(age_greater_5+"\n");
+
     // Any match
-    boolean anyMatch = people.stream()
-        .anyMatch(person -> person.getAge() > 121);
 
-//    System.out.println(anyMatch);
+    boolean name_has_james = people.stream()
+            .anyMatch(person -> person.getName().equals("Jamie Goa"));
+
+    System.out.println(name_has_james+"\n");
+
+
     // None match
-    boolean noneMatch = people.stream()
-        .noneMatch(person -> person.getName().equals("Antonio"));
 
-//    System.out.println(noneMatch);
+    boolean age_greater_150 = people.stream()
+            .noneMatch(person -> person.getAge()>108);
+
+    System.out.println(age_greater_150);
+      System.out.println();
 
     // Max
-    people.stream()
-        .max(Comparator.comparing(Person::getAge));
-//        .ifPresent(System.out::println);
+
+      Optional<Person> max = people.stream()
+              .max(Comparator.comparing(Person::getAge));
+//              .ifPresent(System.out::println);
+      System.out.println(max);
+      System.out.println();
+   
 
     // Min
-    people.stream()
-        .min(Comparator.comparing(Person::getAge));
-//        .ifPresent(System.out::println);
+
+      Optional<Person> min = people.stream()
+              .min(Comparator.comparing(Person::getAge));
+//              .ifPresent(System.out::println);
+      System.out.println(min);
+      System.out.println();
+
 
     // Group
-    Map<Gender, List<Person>> groupByGender = people.stream()
-        .collect(Collectors.groupingBy(Person::getGender));
 
-//    groupByGender.forEach((gender, people1) -> {
-//      System.out.println(gender);
-//      people1.forEach(System.out::println);
-//      System.out.println();
-//    });
+      Map<Gender, List<Person>> groups = people.stream()
+              .collect(Collectors.groupingBy(Person::getGender));
 
-    Optional<String> oldestFemaleAge = people.stream()
-        .filter(person -> person.getGender().equals(Gender.FEMALE))
-        .max(Comparator.comparing(Person::getAge))
-        .map(Person::getName);
+      groups.forEach((gender, people1) -> {
+          System.out.println(gender);
+          people1.forEach(System.out::println);
+          System.out.println();
+      });
 
-    oldestFemaleAge.ifPresent(System.out::println);
+      //oldest female and print name//
+
+     Optional<String> oldest_female_age =  people.stream()
+              .filter(person -> person.getGender().equals(Gender.FEMALE))
+              .max(Comparator.comparing(Person::getAge)).map(Person::getName);
+
+      oldest_female_age.ifPresent(System.out::println);
+      System.out.println();
   }
+
+
 
   private static List<Person> getPeople() {
     return List.of(
